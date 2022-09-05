@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
 
@@ -10,7 +11,7 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::get();
+        $roles = Role::whereNotIn('name', ['admin'])->orderBy('id')->get();
         return view('admin.roles.index', compact('roles'));
     }
 
@@ -35,9 +36,8 @@ class RoleController extends Controller
     public function edit($roleId)
     {
         $role = Role::findOrFail($roleId);
-        return view('admin.roles.edit', compact('role'));
-
-
+        $permissions = Permission::all();
+        return view('admin.roles.edit', compact('role', 'permissions'));
     }
 
     public function update(Request $request, $roleId)
@@ -52,7 +52,21 @@ class RoleController extends Controller
 
         session()->flash('success', 'Role updated Successfully');
         return redirect(route('admin.roles.index'));
+    }
 
+    public function destroy($roleId)
+    {
+        $role = Role::findOrFail($roleId);
+        $role->delete();
+        session()->flash('success', 'Role deleted Successfully');
+        return redirect(route('admin.roles.index'));
+    }
+
+    public function assignPermission(Request $request, Role $role)
+    {
+        $role->permissions()->sync($request->permissions);
+        session()->flash('success', 'Permission Added Successfully');
+        return back();
 
     }
 }

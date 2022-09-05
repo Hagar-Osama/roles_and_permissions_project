@@ -28,7 +28,7 @@
 
 
                                         <div class="ml-6">
-                                            <div class="text-sm leading-5 font-medium text-gray-900">{{$permission->id}}</div>
+                                            <div class="text-sm leading-5 font-medium text-gray-900">{{$loop->iteration}}</div>
                                         </div>
 
                                     </td>
@@ -42,11 +42,15 @@
                                         </div>
                                     </td>
 
-
-
-
                                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                                        <a href="{{route('admin.permissions.edit',$permission->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                        <div class="flex space-x-2">
+                                            <a href="{{route('admin.permissions.edit',$permission->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <form action="{{route('admin.permissions.destroy', $permission->id)}}" method="POST" onsubmit="return confirm('Are You Sure');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="text-red-600 hover:text-red-900" type="submit">Delete</button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

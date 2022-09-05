@@ -36,8 +36,6 @@ class PermissionController extends Controller
     {
         $permission = Permission::findOrFail($permissionId);
         return view('admin.permissions.edit', compact('permission'));
-
-
     }
 
     public function update(Request $request, $permissionId)
@@ -52,8 +50,13 @@ class PermissionController extends Controller
 
         session()->flash('success', 'Permission updated Successfully');
         return redirect(route('admin.permissions.index'));
-
-
     }
 
+    public function destroy($permissionId)
+    {
+        $permission = Permission::findOrFail($permissionId);
+        $permission->delete();
+        session()->flash('success', 'permission deleted Successfully');
+        return redirect(route('admin.permissions.index'));
+    }
 }

@@ -8,7 +8,7 @@
         <div class="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg dark:bg-green-200 dark:text-green-800" role="alert">
             <span class="font-medium">Success alert!</span> {{session('success')}}.
         </div>
-         @endif
+        @endif
         <div class="mt-5">
             <div class="flex flex-col mt-1">
                 <div class="-my-2 py-2 overflow-x-auto sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
@@ -29,7 +29,7 @@
 
 
                                         <div class="ml-6">
-                                            <div class="text-sm leading-5 font-medium text-gray-900">{{$role->id}}</div>
+                                            <div class="text-sm leading-5 font-medium text-gray-900">{{$loop->iteration}}</div>
                                         </div>
 
                                     </td>
@@ -43,16 +43,23 @@
                                         </div>
                                     </td>
 
-
-
-
                                     <td class="px-6 py-4 whitespace-no-wrap text-right border-b border-gray-200 text-sm leading-5 font-medium">
-                                        <a href="{{route('admin.roles.edit',$role->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                        <div class="flex space-x-2">
+                                            <a href="{{route('admin.roles.edit',$role->id)}}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                            <form action="{{route('admin.roles.destroy', $role->id)}}" method="POST"
+                                                onsubmit="return confirm('Are You Sure');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="text-red-600 hover:text-red-900" type="submit">Delete</button>
+                                            </form>
+                                        </div>
+
                                     </td>
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
