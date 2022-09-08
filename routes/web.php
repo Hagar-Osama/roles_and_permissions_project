@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\PermissionController;
+use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\AdminController;
@@ -24,6 +25,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::resource('/posts', PostController::class);
 
 Route::middleware(['auth', 'hasRole:admin'])->name('admin.')->prefix('admin')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('index');
